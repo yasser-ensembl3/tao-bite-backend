@@ -1,24 +1,24 @@
-# 📖 Instructions complètes - Tao Bite Backend
+# 📖 Complete Instructions - Tao Bite Backend
 
-Guide complet pour installer, lancer et utiliser l'API backend.
+Complete guide to install, launch, and use the backend API.
 
 ---
 
-## 🚀 Installation et Lancement
+## 🚀 Installation and Launch
 
-### Prérequis
+### Prerequisites
 - Python 3.9+
 - pip3
 - git
 
-### Étape 1 : Cloner le repository
+### Step 1: Clone the repository
 
 ```bash
 git clone https://github.com/yasser-ensembl3/tao-bite-backend.git
 cd tao-bite-backend
 ```
 
-### Étape 2 : Créer un environnement virtuel (recommandé)
+### Step 2: Create a virtual environment (recommended)
 
 ```bash
 # macOS/Linux
@@ -30,62 +30,62 @@ python3 -m venv venv
 venv\Scripts\activate
 ```
 
-### Étape 3 : Installer les dépendances
+### Step 3: Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Étape 4 : Configurer les clés API
+### Step 4: Configure API keys
 
-Créez un fichier `.env` à la racine du projet :
+Create a `.env` file at the project root:
 
 ```bash
 cp .env.example .env
 ```
 
-Éditez le fichier `.env` avec vos clés API :
+Edit the `.env` file with your API keys:
 
 ```env
 # API Keys Configuration
-LLAMA_CLOUD_API_KEY=votre_cle_llama_cloud
-OPENAI_API_KEY=votre_cle_openai
-ANTHROPIC_API_KEY=votre_cle_anthropic
+LLAMA_CLOUD_API_KEY=your_llama_cloud_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
 
-# Qdrant Cloud Configuration (optionnel)
-QDRANT_URL=votre_url_qdrant_cloud
-QDRANT_API_KEY=votre_cle_qdrant
+# Qdrant Cloud Configuration (optional, otherwise uses local storage)
+QDRANT_URL=your_qdrant_cloud_url_here
+QDRANT_API_KEY=your_qdrant_api_key_here
 ```
 
-### Étape 5 : Lancer le serveur
+### Step 5: Launch the server
 
 ```bash
 python3 app.py
 ```
 
-Le serveur démarre sur **http://localhost:8080**
+The server starts on **http://localhost:8080**
 
 ---
 
-## 📚 Utilisation de l'API
+## 📚 API Usage
 
-### Workflow complet
+### Complete Workflow
 
-#### 1️⃣ Uploader un PDF
+#### 1️⃣ Upload a PDF
 
-**Commande :**
+**Command:**
 ```bash
 curl -X POST http://localhost:8080/upload \
-  -F "file=@chemin/vers/votre-document.pdf"
+  -F "file=@path/to/your-document.pdf"
 ```
 
-**Exemple avec un fichier test :**
+**Example with a test file:**
 ```bash
 curl -X POST http://localhost:8080/upload \
   -F "file=@test.pdf"
 ```
 
-**Réponse attendue :**
+**Expected response:**
 ```json
 {
   "success": true,
@@ -95,23 +95,23 @@ curl -X POST http://localhost:8080/upload \
 }
 ```
 
-**💡 Important :** Notez le `job_id` - vous en aurez besoin pour les étapes suivantes !
+**💡 Important:** Note the `job_id` - you'll need it for the following steps!
 
 ---
 
-#### 2️⃣ Vérifier le statut de conversion
+#### 2️⃣ Check conversion status
 
-**Commande :**
+**Command:**
 ```bash
-curl http://localhost:8080/status/VOTRE_JOB_ID
+curl http://localhost:8080/status/YOUR_JOB_ID
 ```
 
-**Exemple :**
+**Example:**
 ```bash
 curl http://localhost:8080/status/abc123-def456-789ghi
 ```
 
-**Réponse (en cours) :**
+**Response (in progress):**
 ```json
 {
   "status": "processing",
@@ -120,7 +120,7 @@ curl http://localhost:8080/status/abc123-def456-789ghi
 }
 ```
 
-**Réponse (terminée) :**
+**Response (completed):**
 ```json
 {
   "status": "completed",
@@ -130,34 +130,34 @@ curl http://localhost:8080/status/abc123-def456-789ghi
 }
 ```
 
-**💡 Astuce :** Attendez que le statut soit "completed" avant de passer à l'étape suivante.
+**💡 Tip:** Wait until the status is "completed" before moving to the next step.
 
 ---
 
-#### 3️⃣ Télécharger le markdown (optionnel)
+#### 3️⃣ Download the markdown (optional)
 
-**Commande :**
+**Command:**
 ```bash
-curl http://localhost:8080/download/VOTRE_JOB_ID -o document.md
+curl http://localhost:8080/download/YOUR_JOB_ID -o document.md
 ```
 
-**Exemple :**
+**Example:**
 ```bash
-curl http://localhost:8080/download/abc123-def456-789ghi -o mon-document.md
+curl http://localhost:8080/download/abc123-def456-789ghi -o my-document.md
 ```
 
 ---
 
-#### 4️⃣ Chunking + Embeddings + Injection dans la base vectorielle
+#### 4️⃣ Chunking + Embeddings + Injection into vector database
 
-Cette commande fait tout automatiquement :
-- Découpe le texte en chunks
-- Génère les embeddings avec OpenAI
-- Injecte dans Qdrant
+This command does everything automatically:
+- Splits text into chunks
+- Generates embeddings with OpenAI
+- Injects into Qdrant
 
-**Commande :**
+**Command:**
 ```bash
-curl -X POST http://localhost:8080/auto-pipeline/VOTRE_JOB_ID \
+curl -X POST http://localhost:8080/auto-pipeline/YOUR_JOB_ID \
   -H "Content-Type: application/json" \
   -d '{
     "chunk_size": 1000,
@@ -166,7 +166,7 @@ curl -X POST http://localhost:8080/auto-pipeline/VOTRE_JOB_ID \
   }'
 ```
 
-**Exemple :**
+**Example:**
 ```bash
 curl -X POST http://localhost:8080/auto-pipeline/abc123-def456-789ghi \
   -H "Content-Type: application/json" \
@@ -177,12 +177,12 @@ curl -X POST http://localhost:8080/auto-pipeline/abc123-def456-789ghi \
   }'
 ```
 
-**Paramètres :**
-- `chunk_size` : Taille de chaque chunk en tokens (recommandé: 1000)
-- `chunk_overlap` : Chevauchement entre chunks (recommandé: 200)
-- `collection_name` : Nom de la collection Qdrant (défaut: "pdf_documents")
+**Parameters:**
+- `chunk_size`: Size of each chunk in tokens (recommended: 1000)
+- `chunk_overlap`: Overlap between chunks (recommended: 200)
+- `collection_name`: Qdrant collection name (default: "pdf_documents")
 
-**Réponse attendue :**
+**Expected response:**
 ```json
 {
   "success": true,
@@ -195,68 +195,68 @@ curl -X POST http://localhost:8080/auto-pipeline/abc123-def456-789ghi \
 
 ---
 
-#### 5️⃣ Générer du contenu avec Claude AI
+#### 5️⃣ Generate content with Claude AI
 
-Recherchez sémantiquement dans vos documents et générez du contenu avec Claude.
+Semantically search through your documents and generate content with Claude.
 
-**Commande :**
+**Command:**
 ```bash
 curl -X POST http://localhost:8080/generate-content \
   -H "Content-Type: application/json" \
   -d '{
-    "keywords": "vos mots-clés",
-    "instructions": "ce que vous voulez générer",
+    "keywords": "your keywords",
+    "instructions": "what you want to generate",
     "num_chunks": 10,
     "min_relevance": 0.3
   }'
 ```
 
-**Exemples pratiques :**
+**Practical Examples:**
 
-**Exemple 1 : Extraire des citations**
+**Example 1: Extract quotes**
 ```bash
 curl -X POST http://localhost:8080/generate-content \
   -H "Content-Type: application/json" \
   -d '{
     "keywords": "entrepreneurship leadership",
-    "instructions": "Extraire les 5 meilleures citations avec les noms des auteurs",
+    "instructions": "Extract the 5 best quotes with author names",
     "num_chunks": 10
   }'
 ```
 
-**Exemple 2 : Résumer des concepts**
+**Example 2: Summarize concepts**
 ```bash
 curl -X POST http://localhost:8080/generate-content \
   -H "Content-Type: application/json" \
   -d '{
     "keywords": "innovation startup",
-    "instructions": "Résumer les concepts clés en 5 points principaux",
+    "instructions": "Summarize key concepts in 5 main points",
     "num_chunks": 15
   }'
 ```
 
-**Exemple 3 : Créer un article**
+**Example 3: Create an article**
 ```bash
 curl -X POST http://localhost:8080/generate-content \
   -H "Content-Type: application/json" \
   -d '{
     "keywords": "decision making psychology",
-    "instructions": "Créer un article de blog de 500 mots sur ce sujet",
+    "instructions": "Create a 500-word blog post on this topic",
     "num_chunks": 20
   }'
 ```
 
-**Paramètres :**
-- `keywords` (obligatoire) : Mots-clés pour la recherche sémantique
-- `instructions` (obligatoire) : Instructions pour Claude AI
-- `num_chunks` (optionnel) : Nombre de passages pertinents à utiliser (défaut: 10)
-- `min_relevance` (optionnel) : Score minimum de pertinence 0-1 (défaut: 0.3)
+**Parameters:**
+- `keywords` (required): Keywords for semantic search
+- `instructions` (required): Instructions for Claude AI
+- `num_chunks` (optional): Number of relevant passages to use (default: 10)
+- `min_relevance` (optional): Minimum relevance score 0-1 (default: 0.3)
 
-**Réponse :**
+**Response:**
 ```json
 {
   "success": true,
-  "content": "Le contenu généré par Claude...",
+  "content": "Content generated by Claude...",
   "metadata": {
     "chunks_found": 10,
     "avg_relevance": 0.72,
@@ -268,15 +268,15 @@ curl -X POST http://localhost:8080/generate-content \
 
 ---
 
-## 📊 Consulter la base de données
+## 📊 Query the Database
 
-### Voir les statistiques de la base
+### View database statistics
 
 ```bash
 curl http://localhost:8080/api/database/stats
 ```
 
-**Réponse :**
+**Response:**
 ```json
 {
   "collections": [
@@ -292,13 +292,13 @@ curl http://localhost:8080/api/database/stats
 
 ---
 
-### Lister tous les documents
+### List all documents
 
 ```bash
 curl http://localhost:8080/api/database/documents/list
 ```
 
-**Réponse :**
+**Response:**
 ```json
 {
   "collection_name": "pdf_documents",
@@ -325,7 +325,7 @@ curl http://localhost:8080/api/database/documents/list
 
 ---
 
-### Rechercher un document spécifique
+### Search for a specific document
 
 ```bash
 curl "http://localhost:8080/api/database/documents/list?search=thinking"
@@ -333,7 +333,7 @@ curl "http://localhost:8080/api/database/documents/list?search=thinking"
 
 ---
 
-### Voir les documents avec pagination
+### View documents with pagination
 
 ```bash
 curl "http://localhost:8080/api/database/documents?limit=50&offset=0"
@@ -341,13 +341,13 @@ curl "http://localhost:8080/api/database/documents?limit=50&offset=0"
 
 ---
 
-## 🔍 Recherche sémantique dans Qdrant
+## 🔍 Semantic search in Qdrant
 
 ```bash
 curl -X POST http://localhost:8080/qdrant/search \
   -H "Content-Type: application/json" \
   -d '{
-    "query": "votre recherche",
+    "query": "your search",
     "collection_name": "pdf_documents",
     "limit": 10
   }'
@@ -355,56 +355,56 @@ curl -X POST http://localhost:8080/qdrant/search \
 
 ---
 
-## 🤖 Script automatisé complet
+## 🤖 Complete Automated Script
 
-Créez un fichier `test-pipeline.sh` :
+Create a `test-pipeline.sh` file:
 
 ```bash
 #!/bin/bash
 
 # Configuration
-PDF_FILE="mon-document.pdf"
+PDF_FILE="my-document.pdf"
 COLLECTION="pdf_documents"
 
 echo "=========================================="
-echo "🚀 PIPELINE COMPLET TAO BITE BACKEND"
+echo "🚀 COMPLETE TAO BITE BACKEND PIPELINE"
 echo "=========================================="
 
 # 1. Upload
 echo ""
-echo "📤 Étape 1/5 : Upload du PDF..."
+echo "📤 Step 1/5: Uploading PDF..."
 RESPONSE=$(curl -s -X POST http://localhost:8080/upload -F "file=@$PDF_FILE")
 JOB_ID=$(echo $RESPONSE | jq -r '.job_id')
 
 if [ "$JOB_ID" == "null" ]; then
-  echo "❌ Erreur lors de l'upload"
+  echo "❌ Upload error"
   echo $RESPONSE | jq '.'
   exit 1
 fi
 
-echo "✅ Upload réussi - Job ID: $JOB_ID"
+echo "✅ Upload successful - Job ID: $JOB_ID"
 
-# 2. Attendre la conversion
+# 2. Wait for conversion
 echo ""
-echo "⏳ Étape 2/5 : Conversion en cours..."
+echo "⏳ Step 2/5: Conversion in progress..."
 while true; do
   STATUS=$(curl -s http://localhost:8080/status/$JOB_ID | jq -r '.status')
 
   if [ "$STATUS" == "completed" ]; then
-    echo "✅ Conversion terminée!"
+    echo "✅ Conversion complete!"
     break
   elif [ "$STATUS" == "error" ]; then
-    echo "❌ Erreur lors de la conversion"
+    echo "❌ Conversion error"
     exit 1
   fi
 
-  echo "   Status: $STATUS - attente..."
+  echo "   Status: $STATUS - waiting..."
   sleep 2
 done
 
 # 3. Processing + Injection
 echo ""
-echo "🔄 Étape 3/5 : Chunking et injection dans Qdrant..."
+echo "🔄 Step 3/5: Chunking and injecting into Qdrant..."
 PIPELINE_RESPONSE=$(curl -s -X POST http://localhost:8080/auto-pipeline/$JOB_ID \
   -H "Content-Type: application/json" \
   -d "{
@@ -414,46 +414,46 @@ PIPELINE_RESPONSE=$(curl -s -X POST http://localhost:8080/auto-pipeline/$JOB_ID 
   }")
 
 TOTAL_CHUNKS=$(echo $PIPELINE_RESPONSE | jq -r '.total_chunks')
-echo "✅ Pipeline terminé - $TOTAL_CHUNKS chunks créés"
+echo "✅ Pipeline complete - $TOTAL_CHUNKS chunks created"
 
 # 4. Stats
 echo ""
-echo "📊 Étape 4/5 : Statistiques de la base..."
+echo "📊 Step 4/5: Database statistics..."
 curl -s http://localhost:8080/api/database/stats | jq '.'
 
-# 5. Génération de contenu
+# 5. Content generation
 echo ""
-echo "🤖 Étape 5/5 : Génération de contenu IA..."
+echo "🤖 Step 5/5: AI content generation..."
 CONTENT=$(curl -s -X POST http://localhost:8080/generate-content \
   -H "Content-Type: application/json" \
   -d '{
     "keywords": "innovation startup entrepreneurship",
-    "instructions": "Résumer les concepts clés en 3 points principaux",
+    "instructions": "Summarize key concepts in 3 main points",
     "num_chunks": 10
   }')
 
 echo ""
 echo "=========================================="
-echo "✅ CONTENU GÉNÉRÉ :"
+echo "✅ GENERATED CONTENT:"
 echo "=========================================="
 echo $CONTENT | jq -r '.content'
 echo ""
 echo "=========================================="
-echo "📈 Métadonnées :"
+echo "📈 Metadata:"
 echo "=========================================="
 echo $CONTENT | jq '.metadata'
 
 echo ""
-echo "✅ Pipeline complet terminé avec succès!"
+echo "✅ Complete pipeline finished successfully!"
 ```
 
-**Utilisation :**
+**Usage:**
 ```bash
 chmod +x test-pipeline.sh
 ./test-pipeline.sh
 ```
 
-**Note :** Ce script nécessite `jq` pour parser le JSON.
+**Note:** This script requires `jq` for JSON parsing.
 ```bash
 # macOS
 brew install jq
@@ -464,143 +464,143 @@ sudo apt-get install jq
 
 ---
 
-## 🛠️ Commandes utiles
+## 🛠️ Useful Commands
 
-### Arrêter le serveur
+### Stop the server
 ```bash
-# Dans le terminal où le serveur tourne
+# In the terminal where the server is running
 Ctrl+C
 ```
 
-### Redémarrer le serveur
+### Restart the server
 ```bash
 python3 app.py
 ```
 
-### Vérifier si le serveur fonctionne
+### Check if the server is working
 ```bash
 curl http://localhost:8080/api/database/stats
 ```
 
-### Nettoyer les uploads et outputs
+### Clean uploads and outputs
 ```bash
 rm -rf uploads/* outputs/*
 ```
 
-### Voir les logs en temps réel
-Les logs s'affichent directement dans le terminal avec des emojis :
-- 🔍 = Recherche/Requête
-- ✓ = Succès
-- ❌ = Erreur
-- 📚 = Base de données
+### View logs in real-time
+Logs are displayed directly in the terminal with emojis:
+- 🔍 = Search/Query
+- ✓ = Success
+- ❌ = Error
+- 📚 = Database
 - 🎯 = Configuration
 
 ---
 
-## 🐛 Dépannage
+## 🐛 Troubleshooting
 
-### Le serveur ne démarre pas
+### Server won't start
 
-**Erreur : Port 8080 déjà utilisé**
+**Error: Port 8080 already in use**
 ```bash
-# Trouver le processus
+# Find the process
 lsof -ti:8080
 
-# Tuer le processus
+# Kill the process
 kill -9 $(lsof -ti:8080)
 ```
 
-**Erreur : Module manquant**
+**Error: Module not found**
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-### Les clés API ne fonctionnent pas
+### API keys not working
 
-1. Vérifiez que le fichier `.env` existe
-2. Vérifiez que les clés sont correctes (sans espaces)
-3. Redémarrez le serveur après modification du `.env`
-
----
-
-### La conversion échoue
-
-Le système a 2 méthodes de fallback :
-1. **pdfplumber** (rapide, pour PDFs simples)
-2. **LlamaParse** (backup, pour PDFs complexes)
-
-Si les deux échouent, vérifiez :
-- Le PDF n'est pas corrompu
-- Le PDF n'est pas protégé par mot de passe
-- Votre clé `LLAMA_CLOUD_API_KEY` est valide
+1. Check that the `.env` file exists
+2. Verify keys are correct (no spaces)
+3. Restart the server after modifying `.env`
 
 ---
 
-### Qdrant ne fonctionne pas
+### Conversion fails
 
-**Option 1 : Utiliser Qdrant local**
-- Ne définissez pas `QDRANT_URL` et `QDRANT_API_KEY` dans `.env`
-- Les données seront stockées dans `./qdrant_storage/`
+The system has 2 fallback methods:
+1. **pdfplumber** (fast, for simple PDFs)
+2. **LlamaParse** (backup, for complex PDFs)
 
-**Option 2 : Utiliser Qdrant Cloud**
-- Vérifiez que `QDRANT_URL` et `QDRANT_API_KEY` sont corrects
-- Format URL : `https://xxx.cloud.qdrant.io`
-
----
-
-## 📖 Ressources
-
-- **API complète** : Voir `API.md`
-- **Guide rapide** : Voir `QUICKSTART.md`
-- **README** : Voir `README.md`
-- **GitHub** : https://github.com/yasser-ensembl3/tao-bite-backend
+If both fail, check:
+- The PDF is not corrupted
+- The PDF is not password protected
+- Your `LLAMA_CLOUD_API_KEY` is valid
 
 ---
 
-## 💡 Exemples d'utilisation
+### Qdrant not working
 
-### Cas d'usage 1 : Bibliothèque de livres
+**Option 1: Use local Qdrant**
+- Don't define `QDRANT_URL` and `QDRANT_API_KEY` in `.env`
+- Data will be stored in `./qdrant_storage/`
 
-Upload plusieurs livres et posez des questions cross-documents :
+**Option 2: Use Qdrant Cloud**
+- Verify `QDRANT_URL` and `QDRANT_API_KEY` are correct
+- URL format: `https://xxx.cloud.qdrant.io`
+
+---
+
+## 📖 Resources
+
+- **Complete API**: See `API.md`
+- **Quick Guide**: See `QUICKSTART.md`
+- **README**: See `README.md`
+- **GitHub**: https://github.com/yasser-ensembl3/tao-bite-backend
+
+---
+
+## 💡 Usage Examples
+
+### Use Case 1: Book Library
+
+Upload multiple books and ask cross-document questions:
 
 ```bash
-# Upload livre 1
-curl -X POST http://localhost:8080/upload -F "file=@livre1.pdf"
-# Attendez conversion + auto-pipeline
+# Upload book 1
+curl -X POST http://localhost:8080/upload -F "file=@book1.pdf"
+# Wait for conversion + auto-pipeline
 
-# Upload livre 2
-curl -X POST http://localhost:8080/upload -F "file=@livre2.pdf"
-# Attendez conversion + auto-pipeline
+# Upload book 2
+curl -X POST http://localhost:8080/upload -F "file=@book2.pdf"
+# Wait for conversion + auto-pipeline
 
-# Recherche cross-documents
+# Cross-document search
 curl -X POST http://localhost:8080/generate-content \
   -H "Content-Type: application/json" \
   -d '{
     "keywords": "leadership resilience",
-    "instructions": "Comparer les perspectives des différents auteurs sur ce sujet",
+    "instructions": "Compare different authors perspectives on this topic",
     "num_chunks": 20
   }'
 ```
 
 ---
 
-### Cas d'usage 2 : Extraction de citations
+### Use Case 2: Quote Extraction
 
 ```bash
 curl -X POST http://localhost:8080/generate-content \
   -H "Content-Type: application/json" \
   -d '{
     "keywords": "failure success pivot",
-    "instructions": "Extraire 10 citations inspirantes sur l'\''échec et le pivot, avec nom de l'\''auteur et contexte",
+    "instructions": "Extract 10 inspiring quotes about failure and pivoting, with author name and context",
     "num_chunks": 15
   }'
 ```
 
 ---
 
-### Cas d'usage 3 : Génération de contenu Substack
+### Use Case 3: Substack Content Generation
 
 ```bash
 curl -X POST http://localhost:8080/generate-draft \
@@ -614,40 +614,40 @@ curl -X POST http://localhost:8080/generate-draft \
 
 ---
 
-## 🔐 Sécurité (Production)
+## 🔐 Security (Production)
 
-Si vous déployez en production :
+If deploying to production:
 
-1. **Désactivez le mode debug** dans `app.py`
+1. **Disable debug mode** in `app.py`
    ```python
    app.run(host='0.0.0.0', port=8080, debug=False)
    ```
 
-2. **Utilisez un serveur WSGI** (Gunicorn ou Waitress)
+2. **Use a WSGI server** (Gunicorn or Waitress)
    ```bash
    gunicorn -w 4 -b 0.0.0.0:8080 app:app
    ```
 
-3. **Configurez CORS** pour votre domaine uniquement
+3. **Configure CORS** for your domain only
 
-4. **Utilisez HTTPS** (nginx + Let's Encrypt)
+4. **Use HTTPS** (nginx + Let's Encrypt)
 
-5. **Ajoutez une authentification** (JWT, API keys, etc.)
+5. **Add authentication** (JWT, API keys, etc.)
 
-6. **Rate limiting** (Flask-Limiter ou nginx)
-
----
-
-## ✅ Checklist avant de commencer
-
-- [ ] Python 3.9+ installé
-- [ ] pip installé
-- [ ] Repository cloné
-- [ ] Dépendances installées
-- [ ] Fichier `.env` créé avec les clés API
-- [ ] Serveur lancé et accessible sur http://localhost:8080
-- [ ] Test de base réussi (`curl http://localhost:8080/api/database/stats`)
+6. **Rate limiting** (Flask-Limiter or nginx)
 
 ---
 
-**Vous êtes prêt à utiliser Tao Bite Backend ! 🚀**
+## ✅ Pre-launch Checklist
+
+- [ ] Python 3.9+ installed
+- [ ] pip installed
+- [ ] Repository cloned
+- [ ] Dependencies installed
+- [ ] `.env` file created with API keys
+- [ ] Server launched and accessible at http://localhost:8080
+- [ ] Basic test successful (`curl http://localhost:8080/api/database/stats`)
+
+---
+
+**You're ready to use Tao Bite Backend! 🚀**
